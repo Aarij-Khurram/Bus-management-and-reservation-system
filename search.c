@@ -1,3 +1,3 @@
-//search.c testing is goin on......
+//search.c is underdevelopment
 
 
