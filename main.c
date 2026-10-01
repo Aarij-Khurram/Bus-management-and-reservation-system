@@ -1,6 +1,7 @@
 //main file for whole bus reservation system
 //feature is under development
 #include <stdio.h>
+#include "bus.h"
 
 int main()
 {
@@ -26,7 +27,7 @@ int main()
         switch (choice)
         {
             case 1:
-                // "View all buses" function will be added here later on.
+                viewBuses();
                 break;
 
             case 2:
