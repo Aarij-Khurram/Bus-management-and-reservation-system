@@ -5,7 +5,7 @@
 void reserveTicket()
 {
     char passengerName[50];
-    char phone[20];
+    char phone[25];
 
     printf("\n========== RESERVE TICKET ==========\n");
 
