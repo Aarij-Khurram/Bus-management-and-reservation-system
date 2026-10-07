@@ -4,6 +4,6 @@
 
 void reserveTicket();
 void cancelReservation();
-void viewReservation();
+void viewReservation(); //test
 
 #endif
