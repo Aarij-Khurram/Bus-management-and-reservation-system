@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 //main file for whole bus reservation system
 //feature is under development
 #include <stdio.h>
@@ -71,4 +71,4 @@ int main()
 
     return 0;
 }
->>>>>>> e00574f (ADDED VALIDATION TO THE NAME AND PHONE NUMBER)
+
