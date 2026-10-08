@@ -1,7 +1,9 @@
+<<<<<<< HEAD
 //main file for whole bus reservation system
 //feature is under development
 #include <stdio.h>
 #include "bus.h"
+#include "reservation.h"
 
 int main()
 {
@@ -24,11 +26,15 @@ int main()
         printf("\nEnter your choice: ");
         scanf("%d", &choice);
 
+        int c;
+        while ((c = getchar()) != '\n' && c != EOF) {
+        }
+
         switch (choice)
         {
             case 1:
                 viewBuses();
-                 displayBusDetails(1);
+                displayBusDetails(1);
                 break;
 
             case 2:
@@ -40,7 +46,7 @@ int main()
                 break;
 
             case 4:
-                // "Reserve a ticket" function will be added here later on.
+                reserveTicket();
                 break;
 
             case 5:
@@ -65,3 +71,4 @@ int main()
 
     return 0;
 }
+>>>>>>> e00574f (ADDED VALIDATION TO THE NAME AND PHONE NUMBER)
