@@ -16,7 +16,7 @@ void viewBuses()
 {
     printf("\n========== AVAILABLE BUSES ==========\n");
 
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 4; i++)
     {
         printf("\nBus ID: %d\n", busID[i]);
         printf("Route: Karachi -> %s\n", destination[i]);
