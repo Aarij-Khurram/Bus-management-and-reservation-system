@@ -24,3 +24,17 @@ void viewBuses()
         printf("Fare: Rs. %.2f\n", fare[i]);
     }
 }
+
+
+
+
+
+void displayBusDetails(int index)
+{
+    printf("\n========== BUS DETAILS ==========\n");
+
+    printf("Bus ID: %d\n", busID[index]);
+    printf("Route: Karachi -> %s\n", destination[index]);
+    printf("Departure: %s\n", departure[index]);
+    printf("Fare: Rs. %.2f\n", fare[index]);
+}
