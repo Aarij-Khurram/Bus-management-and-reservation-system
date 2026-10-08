@@ -3,22 +3,23 @@
 #include <stdio.h>
 #include "bus.h"
 
+int busID[] = {101, 102, 103};
+char destination[][20] = {"Lahore", "Islamabad", "Multan"};
+char departure[][20] = {"08:00 AM", "10:00 AM", "09:00 AM"};
+float fare[] = {2500, 3000, 2200};
+//Array declaration for three buses for now
+
+
+
 void viewBuses()
 {
     printf("\n========== AVAILABLE BUSES ==========\n");
 
-    printf("\nBus ID: 101\n");
-    printf("Route: Karachi -> Lahore\n");
-    printf("Departure: 08:00 AM\n");
-    printf("Fare: Rs. 2500\n");
-
-    printf("\nBus ID: 102\n");
-    printf("Route: Karachi -> Islamabad\n");
-    printf("Departure: 10:00 AM\n");
-    printf("Fare: Rs. 3000\n");
-
-    printf("\nBus ID: 103\n");
-    printf("Route: Karachi -> Multan\n");
-    printf("Departure: 09:00 AM\n");
-    printf("Fare: Rs. 2200\n");
+    for (int i = 0; i < 3; i++)
+    {
+        printf("\nBus ID: %d\n", busID[i]);
+        printf("Route: Karachi -> %s\n", destination[i]);
+        printf("Departure: %s\n", departure[i]);
+        printf("Fare: Rs. %.2f\n", fare[i]);
+    }
 }
