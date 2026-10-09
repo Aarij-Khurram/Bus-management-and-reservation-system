@@ -6,7 +6,7 @@
 
 #include "search.h"
 #include "bus.h"
-// checking git
+
 void searchbus(void){
     char source[30];
     char destinationInput[30];
