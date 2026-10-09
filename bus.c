@@ -35,8 +35,15 @@ void viewBuses()
 
 
 
+
 void displayBusDetails(int index)
 {
+    if (index < 0 || index >= BUS_COUNT)
+    {
+        printf("Invalid bus index!\n");
+        return;
+    }
+
     printf("\n========== BUS DETAILS ==========\n");
 
     printf("Bus ID: %d\n", busID[index]);
