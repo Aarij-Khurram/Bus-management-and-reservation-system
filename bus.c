@@ -22,7 +22,7 @@ void viewBuses()
 {
     printf("\n========== AVAILABLE BUSES ==========\n");
 
-    for (int i = 0; i < sizeof(busID) / sizeof(busID[0]); i++)
+    for (int i = 0; i < BUS_COUNT; i++)
     {
         printf("\nBus ID: %d\n", busID[i]);
         printf("Route: Karachi -> %s\n", destination[i]);
