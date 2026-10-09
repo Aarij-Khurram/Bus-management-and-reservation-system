@@ -51,3 +51,24 @@ void displayBusDetails(int index)
     printf("Departure: %s\n", departure[index]);
     printf("Fare: Rs. %.2f\n", fare[index]);
 }
+
+
+
+
+
+
+
+int findBusIndex(int id)
+{
+    for (int i = 0; i < BUS_COUNT; i++)
+    {
+        if (busID[i] == id)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+
