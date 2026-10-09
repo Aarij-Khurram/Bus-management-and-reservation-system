@@ -34,7 +34,6 @@ int main()
         {
             case 1:
                 viewBuses();
-                displayBusDetails(1);
                 break;
 
             case 2:
