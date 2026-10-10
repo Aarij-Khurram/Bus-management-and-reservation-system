@@ -6,6 +6,45 @@
 
  #define NameSize 50
  #define  PhoneSize 25
+ #define  MaxReservations 100
+
+ static int resID[MaxReservations];
+ static char resName[MaxReservations][NameSize];
+ static char resPhone[MaxReservations][PhoneSize];
+ static int resBus[MaxReservations];
+static int resSeat[MaxReservations];
+static int resCount = 0;
+static int nextID = 1001;
+
+static int generateReservationID(void){
+    return nextID++;
+}
+int findReservation(int id){
+    int i;
+    for(i=0;i<resCount;i++){
+        if (resID[i] == id){
+            return i;
+        }
+    }
+    return -1;
+}
+static int addReservation(char name[], char phone[], int busID, int seat){
+    int id;
+
+    if(resCount >= MaxReservations){
+        return -1;
+    }
+
+    id = generateReservationID();
+    resID[resCount] = id;
+    strcpy(resName[resCount], name);
+    strcpy(resPhone[resCount], phone);
+    resBus[resCount] = busID;
+    resSeat[resCount] = seat;
+    resCount++;
+    return id;
+
+}
 
  static void readLine(char text[], int size)
  {
@@ -79,4 +118,5 @@ void viewReservation()
 {
     printf("View reservation\n");
 }
+
 
