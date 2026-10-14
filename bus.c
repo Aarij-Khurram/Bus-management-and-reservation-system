@@ -97,3 +97,22 @@ void searchBusByID(void)                          //function 4
     }
 }
 
+
+
+
+int getBusCount(void)                       //function 5
+{
+    return BUS_COUNT;
+}
+
+
+
+int busExists(int id)                      //function 6
+{
+    if (findBusIndex(id) != -1)
+    {
+        return 1;
+    }
+
+    return 0;
+}

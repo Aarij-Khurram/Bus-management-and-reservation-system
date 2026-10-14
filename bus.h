@@ -15,5 +15,8 @@ extern float fare[BUS_COUNT];
 void viewBuses(void);
 void displayBusDetails(int index);
 int findBusIndex(int id);
+void searchBusByID(void);
+int getBusCount(void);
+int busExists(int id);
 
 #endif

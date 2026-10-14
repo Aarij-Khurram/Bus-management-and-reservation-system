@@ -33,11 +33,12 @@ int main()
         switch (choice)
         {
             case 1:
+                printf("\nTotal buses listed: %d\n", getBusCount());
                 viewBuses();
                 break;
 
             case 2:
-                // "Search for a bus" function will be added here later on.
+                searchBusByID();
                 break;
 
             case 3:
