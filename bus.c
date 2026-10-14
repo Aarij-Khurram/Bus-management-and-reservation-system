@@ -1,6 +1,7 @@
 // .c file for bus
 //feature is under development
 #include <stdio.h>
+#include <stddef.h>
 #include "bus.h"
 
 int busID[BUS_COUNT] = {101, 102, 103, 104};
@@ -115,4 +116,30 @@ int busExists(int id)                      //function 6
     }
 
     return 0;
+}
+
+
+
+
+int getBusID(int index)                   //function 7
+{
+    if (index < 0 || index >= BUS_COUNT)
+    {
+        return -1;
+    }
+
+    return busID[index];
+}
+
+
+
+
+const char *getBusDestination(int index)
+{
+    if (index < 0 || index >= BUS_COUNT)
+    {
+        return NULL;
+    }
+
+    return destination[index];
 }
