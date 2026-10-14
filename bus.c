@@ -18,7 +18,7 @@ float fare[BUS_COUNT] = {2500, 3000, 2200, 3500};
 
 
 
-void viewBuses()
+void viewBuses()             // function 1 
 {
     printf("\n========== AVAILABLE BUSES ==========\n");
 
@@ -36,7 +36,7 @@ void viewBuses()
 
 
 
-void displayBusDetails(int index)
+void displayBusDetails(int index)           //function 2
 {
     if (index < 0 || index >= BUS_COUNT)
     {
@@ -57,8 +57,7 @@ void displayBusDetails(int index)
 
 
 
-
-int findBusIndex(int id)
+int findBusIndex(int id)                   //function 3
 {
     for (int i = 0; i < BUS_COUNT; i++)
     {
@@ -71,4 +70,30 @@ int findBusIndex(int id)
     return -1;
 }
 
+
+
+
+
+
+void searchBusByID(void)                          //function 4
+{
+    int id;
+    int index;
+
+    printf("\n========== SEARCH BUS BY ID ==========\n");
+    printf("Enter Bus ID: ");
+
+    scanf("%d", &id);
+
+    index = findBusIndex(id);
+
+    if (index == -1)
+    {
+        printf("Bus not found!\n");
+    }
+    else
+    {
+        displayBusDetails(index);
+    }
+}
 
