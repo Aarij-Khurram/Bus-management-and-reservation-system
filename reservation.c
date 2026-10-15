@@ -2,7 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 #include "reservation.h"
+#include "bus.h"
+#include "seat.h"
 
  #define NameSize 50
  #define  PhoneSize 25
@@ -28,6 +31,7 @@ int findReservation(int id){
     }
     return -1;
 }
+
 static int addReservation(char name[], char phone[], int busID, int seat){
     int id;
 
@@ -52,6 +56,15 @@ static int addReservation(char name[], char phone[], int busID, int seat){
      text[strcspn(text, "\n")] = '\0'; 
  }
 
+static int readInt(void){
+    char line[20];
+    int n;
+
+    readLine(line, 20);
+    if(sscanf(line, "%d", &n) == 1) return n;
+    return -1;
+}
+
  static int isValidName(char name[])
 {
     int i, letters = 0;
@@ -67,6 +80,7 @@ static int addReservation(char name[], char phone[], int busID, int seat){
     }
     return letters >0;
 }
+
 static int isValidPhone(char phone[]){
     int i;
     int len = strlen(phone);
@@ -87,6 +101,7 @@ static void getPassengerName(char name[]){
         printf("Invalid name. Use letters and spaces only.\n");
     }
 }
+
 static void getphone(char phone[]){
     while(1){
         printf("Enter phone number: ");
@@ -95,17 +110,59 @@ static void getphone(char phone[]){
         printf("Invalid phone number. Digits only.\n");
     }
 }
+
+static int chooseBus(void){
+    int busID;
+    
+    printf("Enter bus ID: ");
+    busID = readInt();
+
+    if(!busExists(busID)){
+        printf("Invalid bus ID.\n");
+        return -1;
+    }
+    return busID;
+}
+
+static int chooseSeat(int busID){
+    int seat;
+    int busIndex = findBusIndex(busID);
+
+    displaySeats(busIndex);
+    printf("Enter seat number (1-%d): ", MAX_SEATS);
+    seat = readInt();
+
+    if(seat < 1 || seat > MAX_SEATS){
+        printf("Invalid seat number.\n");
+        return -1;
+    }
+    if(!isSeatAvailable(busIndex, seat)){
+        printf("Seat %d is already taken.\n", seat);
+        return -1;
+    }
+    return seat;
+}
+
 void reserveTicket()
 {
     char passengerName[NameSize];
     char phone[PhoneSize];
+    int busID, seat;
 
     printf("\n========== RESERVE TICKET ==========\n");
+
+    busID = chooseBus();
+    if (busID == -1) return;
+
     getPassengerName(passengerName);
     getphone(phone);
 
+    seat = chooseSeat(busID);
+    if (seat == -1) return;
+
     printf("\nPassenger: %s\n", passengerName);
     printf("Phone: %s\n", phone);
+    printf("Bus: %d, Seat: %d selected.\n", busID, seat);
    
 }
 
