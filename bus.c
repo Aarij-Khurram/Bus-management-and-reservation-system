@@ -1,6 +1,7 @@
 // .c file for bus
 //feature is under development
 #include <stdio.h>
+#include <stddef.h>
 #include "bus.h"
 
 int busID[BUS_COUNT] = {101, 102, 103, 104};
@@ -18,7 +19,7 @@ float fare[BUS_COUNT] = {2500, 3000, 2200, 3500};
 
 
 
-void viewBuses()
+void viewBuses()             // function 1 
 {
     printf("\n========== AVAILABLE BUSES ==========\n");
 
@@ -36,7 +37,7 @@ void viewBuses()
 
 
 
-void displayBusDetails(int index)
+void displayBusDetails(int index)           //function 2
 {
     if (index < 0 || index >= BUS_COUNT)
     {
@@ -57,8 +58,7 @@ void displayBusDetails(int index)
 
 
 
-
-int findBusIndex(int id)
+int findBusIndex(int id)                   //function 3
 {
     for (int i = 0; i < BUS_COUNT; i++)
     {
@@ -72,3 +72,85 @@ int findBusIndex(int id)
 }
 
 
+
+
+
+
+void searchBusByID(void)                          //function 4
+{
+    int id;
+    int index;
+
+    printf("\n========== SEARCH BUS BY ID ==========\n");
+    printf("Enter Bus ID: ");
+
+    if (scanf("%d", &id) != 1)
+{
+    printf("Invalid input! Please enter a numeric bus ID.\n");
+
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+    {
+        /* Clear invalid input */
+    }
+
+    return;
+}
+
+    index = findBusIndex(id);
+
+    if (index == -1)
+    {
+        printf("Bus not found!\n");
+    }
+    else
+    {
+        displayBusDetails(index);
+    }
+}
+
+
+
+
+int getBusCount(void)                       //function 5
+{
+    return BUS_COUNT;
+}
+
+
+
+int busExists(int id)                      //function 6
+{
+    if (findBusIndex(id) != -1)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
+
+
+
+int getBusID(int index)                   //function 7
+{
+    if (index < 0 || index >= BUS_COUNT)
+    {
+        return -1;
+    }
+
+    return busID[index];
+}
+
+
+
+
+const char *getBusDestination(int index)       //function 8
+{
+    if (index < 0 || index >= BUS_COUNT)
+    {
+        return NULL;
+    }
+
+    return destination[index];
+}

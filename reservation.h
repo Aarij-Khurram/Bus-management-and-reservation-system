@@ -4,6 +4,7 @@
 
 void reserveTicket();
 void cancelReservation();
-void viewReservation(); //test
+void viewReservation(); 
+int findReservation(int id);
 
 #endif
