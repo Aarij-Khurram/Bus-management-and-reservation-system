@@ -84,7 +84,18 @@ void searchBusByID(void)                          //function 4
     printf("\n========== SEARCH BUS BY ID ==========\n");
     printf("Enter Bus ID: ");
 
-    scanf("%d", &id);
+    if (scanf("%d", &id) != 1)
+{
+    printf("Invalid input! Please enter a numeric bus ID.\n");
+
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+    {
+        /* Clear invalid input */
+    }
+
+    return;
+}
 
     index = findBusIndex(id);
 
@@ -134,7 +145,7 @@ int getBusID(int index)                   //function 7
 
 
 
-const char *getBusDestination(int index)
+const char *getBusDestination(int index)       //function 8
 {
     if (index < 0 || index >= BUS_COUNT)
     {
