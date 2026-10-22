@@ -104,7 +104,7 @@ static void getPassengerName(char name[]){
 
 static void getphone(char phone[]){
     while(1){
-        printf("Enter phone number: ");
+        printf("Enter phone number(11-digits): ");
         readLine(phone, PhoneSize);
         if(isValidPhone(phone)) break;
         printf("Invalid phone number. Digits only.\n");
@@ -142,12 +142,20 @@ static int chooseSeat(int busID){
     }
     return seat;
 }
+static void printReservation(int index){
+    printf("\nReservation ID: R%d\n", resID[index]);
+    printf("Passenger: %s\n", resName[index]);
+    printf("Phone: %s\n", resPhone[index]);
+    printf("Seat: %d\n", resSeat[index]);
+    displayBusDetails(findBusIndex(resBus[index]));
+}
 
 void reserveTicket()
 {
     char passengerName[NameSize];
     char phone[PhoneSize];
     int busID, seat;
+    int busIndex, id;
 
     printf("\n========== RESERVE TICKET ==========\n");
 
@@ -160,10 +168,21 @@ void reserveTicket()
     seat = chooseSeat(busID);
     if (seat == -1) return;
 
-    printf("\nPassenger: %s\n", passengerName);
-    printf("Phone: %s\n", phone);
-    printf("Bus: %d, Seat: %d selected.\n", busID, seat);
-   
+    busIndex =findBusIndex(busID);
+
+    if(!reserveSeat(busIndex, seat)){
+        printf("Could not reserve the seat. NO reservation was made.\n");
+        return ;
+    }
+
+    id = addReservation(passengerName, phone, busID, seat);
+    if(id == -1){
+        releaseSeat(busIndex, seat);
+        printf("Reservation list is full. The seat was released.\n");
+        return;
+    }
+    printf("\nReservation successful!");
+    printReservation(findReservation(id));
 }
 
 void cancelReservation()
