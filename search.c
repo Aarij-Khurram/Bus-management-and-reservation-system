@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "search.h"
 #include "bus.h"
@@ -15,9 +16,20 @@ void searchbus(void){
     printf("\n========== SEARCH BUSES ==========\n");
     
     printf("Enter source city: "); //input
-    scanf(" %s", source);
+    scanf(" %29s", source);
     printf("Enter destination city: ");
-    scanf(" %s", destinationInput);
+    scanf(" %29s", destinationInput);
+
+
+    
+    for (int i = 0; source[i] != '\0'; i++)
+    {
+        source[i] = tolower((unsigned char)source[i]);
+    }
+    for (int i = 0; destinationInput[i] != '\0'; i++)
+    {
+        destinationInput[i] = tolower((unsigned char)destinationInput[i]);
+    }
 
     //departure city is only karachi rn
     if (strcmp(source, "karachi") != 0)
