@@ -10,6 +10,7 @@
  #define NameSize 50
  #define  PhoneSize 25
  #define  MaxReservations 100
+ #define MaxTries 3
 
  static int resID[MaxReservations];
  static char resName[MaxReservations][NameSize];
@@ -18,7 +19,6 @@
 static int resSeat[MaxReservations];
 static int resCount = 0;
 static int nextID = 1001;
-
 static int generateReservationID(void){
     return nextID++;
 }
@@ -50,19 +50,52 @@ static int addReservation(char name[], char phone[], int busID, int seat){
 
 }
 
- static void readLine(char text[], int size)
+ static int readLine(char text[], int size)
  {
-     fgets(text, size, stdin);
-     text[strcspn(text, "\n")] = '\0'; 
- }
+    int c;
 
+    if(fgets(text, size, stdin) == NULL)
+    {
+        text[0] = '\0';
+        return 1;
+    }
+
+    if(strchr(text, '\n') == NULL){
+        while((c = getchar()) != '\n' && c !=EOF){
+
+        }
+        return 0;
+    } 
+    text[strcspn(text, "\n")] = '\0';
+    return 1;
+}
+static void trimSpaces(char text[]){
+    int start = 0, end, i;
+
+    while(text[start] == ' ') start++;
+
+    end = strlen(text) - 1;
+    while(end >= start && text[end] == ' ') end--;
+
+    for(i = 0; i <= end - start; i++){
+        text[i] = text[start + i];
+    }
+    text[end - start + 1] = '\0';
+}
 static int readInt(void){
     char line[20];
-    int n;
+    int i, len;
 
-    readLine(line, 20);
-    if(sscanf(line, "%d", &n) == 1) return n;
-    return -1;
+    if(!readLine(line, 20)) return -1;
+
+    trimSpaces(line);
+    len = strlen(line);
+    if(len == 0 || len > 9) return -1;
+
+    for(i = 0; i < len; i++){
+        if(!isdigit(line[i])) return -1;
+    }
+    return atoi(line);
 }
 
  static int isValidName(char name[])
@@ -96,51 +129,64 @@ static int isValidPhone(char phone[]){
 static void getPassengerName(char name[]){
     while(1){
         printf("Enter passenger name: ");
-        readLine(name, NameSize);
+        if(!readLine(name, NameSize)){
+            printf("Name too long (max %d characters).\n", NameSize - 1);
+            continue;
+        }
+        trimSpaces(name);
         if(isValidName(name)) break;
         printf("Invalid name. Use letters and spaces only.\n");
     }
 }
 
-static void getphone(char phone[]){
+static void getPhone(char phone[]){
     while(1){
-        printf("Enter phone number(11-digits): ");
-        readLine(phone, PhoneSize);
+        printf("Enter phone number (11 digits): ");
+        if(!readLine(phone, PhoneSize)){
+            printf("Phone number too long.\n");
+            continue;
+        }
+        trimSpaces(phone);
         if(isValidPhone(phone)) break;
-        printf("Invalid phone number. Digits only.\n");
+        printf("Invalid phone number. Enter exactly 11 digits.\n");
     }
 }
 
 static int chooseBus(void){
-    int busID;
-    
-    printf("Enter bus ID: ");
-    busID = readInt();
+    int tries, busID;
 
-    if(!busExists(busID)){
-        printf("Invalid bus ID.\n");
-        return -1;
+    for(tries = 1; tries <= MaxTries; tries++){
+        printf("Enter bus ID: ");
+        busID = readInt();
+        if(busExists(busID)) return busID;
+        printf("Invalid bus ID. (attempt %d of %d)\n", tries, MaxTries);
     }
-    return busID;
+    printf("Too many invalid attempts. Reservation cancelled.\n");
+    return -1;
 }
 
 static int chooseSeat(int busID){
-    int seat;
     int busIndex = findBusIndex(busID);
+    int tries, seat;
 
     displaySeats(busIndex);
-    printf("Enter seat number (1-%d): ", MAX_SEATS);
-    seat = readInt();
 
-    if(seat < 1 || seat > MAX_SEATS){
-        printf("Invalid seat number.\n");
-        return -1;
+    for(tries = 1; tries <= MaxTries; tries++){
+        printf("Enter seat number (1-%d): ", MAX_SEATS);
+        seat = readInt();
+
+        if(seat < 1 || seat > MAX_SEATS){
+            printf("Invalid seat number.\n");
+        }
+        else if(!isSeatAvailable(busIndex, seat)){
+            printf("Seat %d is already taken.\n", seat);
+        }
+        else{
+            return seat;
+        }
     }
-    if(!isSeatAvailable(busIndex, seat)){
-        printf("Seat %d is already taken.\n", seat);
-        return -1;
-    }
-    return seat;
+    printf("Too many invalid attempts. Reservation cancelled.\n");
+    return -1;
 }
 static void printReservation(int index){
     printf("\nReservation ID: R%d\n", resID[index]);
@@ -151,17 +197,18 @@ static void printReservation(int index){
 }
 static int readReservationID(void){
     char line[20];
-    int i, start =0, len;
+    int i, start = 0, len;
 
     printf("Enter reservation ID (e.g. R1001): ");
-    readLine(line, 20);
+    if(!readLine(line, 20)) return -1;
+    trimSpaces(line);
 
-    if(line[0] == 'R' || line[0] == 'r') start =1;
+    if(line[0] == 'R' || line[0] == 'r') start = 1;
 
-    len=strlen(line);
-    if(len == start) return -1;
-    if(len - start >9) return -1;
-    for(i =start; i< len; i++){
+    len = strlen(line);
+    if(len == start || len - start > 9) return -1;
+
+    for(i = start; i < len; i++){
         if(!isdigit(line[i])) return -1;
     }
     return atoi(&line[start]);
@@ -177,7 +224,18 @@ static void removeReservation(int index){
     }
     resCount--;
 }
+static int askYesNo(void){
+    char answer[10];
+    int i;
 
+    readLine(answer, 10);
+    trimSpaces(answer);
+
+    for(i = 0; answer[i] != '\0'; i++){
+        answer[i] = tolower(answer[i]);
+    }
+    return strcmp(answer, "y") == 0 || strcmp(answer, "yes") == 0;
+}
 void reserveTicket()
 {
     char passengerName[NameSize];
@@ -234,7 +292,8 @@ void cancelReservation(void){
     printf("\nCancel this reservation? (y/n): ");
     readLine(answer, 10);
 
-    if(answer[0] != 'y' && answer[0] != 'Y'){
+        printf("\nCancel this reservation? (y/n): ");
+    if(!askYesNo()){
         printf("Cancellation aborted.\n");
         return;
     }
