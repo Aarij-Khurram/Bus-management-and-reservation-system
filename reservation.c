@@ -149,6 +149,34 @@ static void printReservation(int index){
     printf("Seat: %d\n", resSeat[index]);
     displayBusDetails(findBusIndex(resBus[index]));
 }
+static int readReservationID(void){
+    char line[20];
+    int i, start =0, len;
+
+    printf("Enter reservation ID (e.g. R1001): ");
+    readLine(line, 20);
+
+    if(line[0] == 'R' || line[0] == 'r') start =1;
+
+    len=strlen(line);
+    if(len == start) return -1;
+    if(len - start >9) return -1;
+    for(i =start; i< len; i++){
+        if(!isdigit(line[i])) return -1;
+    }
+    return atoi(&line[start]);
+}
+static void removeReservation(int index){
+    int i;
+    for(i =index; i < resCount -1; i++){
+        resID[i] = resID[i+1];
+        strcpy(resName[i],resName[i+1]);
+        strcpy(resPhone[i],resPhone[i+1]);
+        resBus[i] = resBus[i+1];
+        resSeat[i] = resSeat[i+1];
+    }
+    resCount--;
+}
 
 void reserveTicket()
 {
@@ -185,14 +213,61 @@ void reserveTicket()
     printReservation(findReservation(id));
 }
 
-void cancelReservation()
-{
-    printf("Cancel reservation\n");
+void cancelReservation(void){
+    int id, index, busIndex, seat;
+    char answer[10];
+
+    printf("\n========== CANCEL RESERVATION ==========\n");
+    id = readReservationID();
+    if(id == -1){
+        printf("Invalid reservation ID.\n");
+        return;
+    }
+
+    index = findReservation(id);
+    if(index == -1){
+        printf("Reservation not found.\n");
+        return;
+    }
+
+    printReservation(index);
+    printf("\nCancel this reservation? (y/n): ");
+    readLine(answer, 10);
+
+    if(answer[0] != 'y' && answer[0] != 'Y'){
+        printf("Cancellation aborted.\n");
+        return;
+    }
+
+    busIndex = findBusIndex(resBus[index]);
+    seat = resSeat[index];
+
+    if(!releaseSeat(busIndex, seat)){
+        printf("Could not release the seat. Reservation not cancelled.\n");
+        return;
+    }
+
+    removeReservation(index);
+    printf("Reservation cancelled.\n");
 }
 
 void viewReservation()
 {
-    printf("View reservation\n");
+    int id, index;
+
+    printf("\n=========== VIEW RESERVATION ===========\n");
+    id =readReservationID();
+    if(id == -1){
+        printf("Invalid reservation ID.\n");
+        return;
+    }
+
+    index = findReservation(id);
+    if(index == -1){
+        printf("Reservation not found.\n");
+        return;
+    }
+    printReservation(index);
 }
 
 
