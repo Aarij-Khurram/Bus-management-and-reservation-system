@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "bus.h"
 #include "reservation.h"
+#include "seat.h"
 
 int main()
 {
@@ -24,8 +25,19 @@ int main()
         printf("7. Exit\n");
 
         printf("\nEnter your choice: ");
-        scanf("%d", &choice);
+        if (scanf("%d", &choice) != 1)
+{
+    printf("Invalid input! Please enter a number from 1 to 7.\n");
 
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+    {
+        /* Clear invalid input */
+    }
+
+    choice = 0;
+    continue;
+}
         int c;
         while ((c = getchar()) != '\n' && c != EOF) {
         }
@@ -42,7 +54,7 @@ int main()
                 break;
 
             case 3:
-                // "View seat availability" function will be added here later on.
+                 displayseats();
                 break;
 
             case 4:
@@ -50,15 +62,15 @@ int main()
                 break;
 
             case 5:
-                // "Cancel a reservation" function will be added here later on.
-                break;
+                 cancelReservation();
+                 break;
+
 
             case 6:
-                // "View reservation details" function will be added here later on.
+                  viewReservation();
                 break;
 
             case 7:
-                // "Exit the program" function will be added here later on.
                 printf("\nThank you for using the Bus Ticket Reservation System!\n");
                 break;
 

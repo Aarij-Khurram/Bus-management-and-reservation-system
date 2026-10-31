@@ -12,14 +12,22 @@ void displaySeats(int busIndex){
         return;
     }
     printf("\n============ SEAT AVAILABILITY ==========\n");
-    for (int i = 0; i<MAX_SEATS; i++){
-        printf("Seat %2d: ",i+1);
-        if (seatStatus[busIndex][i] == 0)
-            printf("Available\n");
-        else
-            printf("Booked\n");
+    printf("Key:  _ = Available    X = Booked\n\n");
+    printf("          [ FRONT OF BUS ]\n\n");
+
+    for (int i = 0; i < MAX_SEATS; i++)
+    {
+    char mark = (seatStatus[busIndex][i] == 0) ? '_' : 'X';
+
+    printf("%2d[%c] ", i + 1, mark);
+
+    if ((i + 1) % 4 == 2)          
+        printf("         ");
+
+    if ((i + 1) % 4 == 0 || i == MAX_SEATS - 1)   
+        printf("\n");
     }
-    
+    printf("\n=========================================\n");    
 }
 
 int isSeatAvailable(int busIndex,int seatNumber){
@@ -42,7 +50,7 @@ int reserveSeat(int busIndex,int seatNumber){
         printf("Invalid bus selection.\n");
         return 0;
     }
-    if(seatNumber<1 || seatNumber >= MAX_SEATS){
+    if(seatNumber<1 || seatNumber > MAX_SEATS){
         printf("Invalid seat number. Choose 1 to %d.\n",MAX_SEATS);
         return 0;
     }
