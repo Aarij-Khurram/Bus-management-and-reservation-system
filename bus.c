@@ -4,19 +4,12 @@
 #include <stddef.h>
 #include "bus.h"
 
-int busID[BUS_COUNT] = {101, 102, 103, 104};
-
-char destination[BUS_COUNT][20] = {
-    "Lahore", "Islamabad", "Multan", "Peshawar"
+Bus buses[BUS_COUNT] = {
+    {101, "Lahore", "08:00 AM", 2500},
+    {102, "Islamabad", "10:00 AM", 3000},
+    {103, "Multan", "09:00 AM", 2200},
+    {104, "Peshawar", "11:00 AM", 3500}
 };
-
-char departure[BUS_COUNT][20] = {
-    "08:00 AM", "10:00 AM", "09:00 AM", "11:00 AM"
-};
-
-float fare[BUS_COUNT] = {2500, 3000, 2200, 3500};
-//Array declaration for four buses
-
 
 
 void viewBuses()             // function 1 

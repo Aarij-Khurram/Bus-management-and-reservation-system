@@ -7,10 +7,15 @@
 
 #define BUS_COUNT 4
 
-extern int busID[BUS_COUNT];
-extern char destination[BUS_COUNT][20];
-extern char departure[BUS_COUNT][20];
-extern float fare[BUS_COUNT];
+typedef struct
+{
+    int busID;
+    char destination[20];
+    char departure[20];
+    float fare;
+} Bus;
+
+
 
 void viewBuses(void);
 void displayBusDetails(int index);
