@@ -6,17 +6,14 @@
 #include "reservation.h"
 #include "bus.h"
 #include "seat.h"
+#include "data.h"
 
  #define NameSize 50
  #define  PhoneSize 25
  #define  MaxReservations 100
  #define MaxTries 3
 
- static int resID[MaxReservations];
- static char resName[MaxReservations][NameSize];
- static char resPhone[MaxReservations][PhoneSize];
- static int resBus[MaxReservations];
-static int resSeat[MaxReservations];
+static struct Reservation reservations[MaxReservations];
 static int resCount = 0;
 static int nextID = 1001;
 static int generateReservationID(void){
@@ -24,10 +21,8 @@ static int generateReservationID(void){
 }
 int findReservation(int id){
     int i;
-    for(i=0;i<resCount;i++){
-        if (resID[i] == id){
-            return i;
-        }
+    for(i = 0; i < resCount; i++){
+        if(reservations[i].reservationID == id) return i;
     }
     return -1;
 }
@@ -35,21 +30,17 @@ int findReservation(int id){
 static int addReservation(char name[], char phone[], int busID, int seat){
     int id;
 
-    if(resCount >= MaxReservations){
-        return -1;
-    }
+    if(resCount >= MaxReservations) return -1;
 
     id = generateReservationID();
-    resID[resCount] = id;
-    strcpy(resName[resCount], name);
-    strcpy(resPhone[resCount], phone);
-    resBus[resCount] = busID;
-    resSeat[resCount] = seat;
+    reservations[resCount].reservationID = id;
+    strcpy(reservations[resCount].passengerName, name);
+    strcpy(reservations[resCount].phone, phone);
+    reservations[resCount].busID = busID;
+    reservations[resCount].seatNumber = seat;
     resCount++;
     return id;
-
 }
-
  static int readLine(char text[], int size)
  {
     int c;
@@ -189,11 +180,13 @@ static int chooseSeat(int busID){
     return -1;
 }
 static void printReservation(int index){
-    printf("\nReservation ID: R%d\n", resID[index]);
-    printf("Passenger: %s\n", resName[index]);
-    printf("Phone: %s\n", resPhone[index]);
-    printf("Seat: %d\n", resSeat[index]);
-    displayBusDetails(findBusIndex(resBus[index]));
+    struct Reservation r = reservations[index];
+
+    printf("\nReservation ID: R%d\n", r.reservationID);
+    printf("Passenger: %s\n", r.passengerName);
+    printf("Phone: %s\n", r.phone);
+    printf("Seat: %d\n", r.seatNumber);
+    displayBusDetails(findBusIndex(r.busID));
 }
 static int readReservationID(void){
     char line[20];
@@ -215,15 +208,12 @@ static int readReservationID(void){
 }
 static void removeReservation(int index){
     int i;
-    for(i =index; i < resCount -1; i++){
-        resID[i] = resID[i+1];
-        strcpy(resName[i],resName[i+1]);
-        strcpy(resPhone[i],resPhone[i+1]);
-        resBus[i] = resBus[i+1];
-        resSeat[i] = resSeat[i+1];
+    for(i = index; i < resCount - 1; i++){
+        reservations[i] = reservations[i + 1];
     }
     resCount--;
 }
+
 static int askYesNo(void){
     char answer[10];
     int i;
@@ -249,7 +239,7 @@ void reserveTicket()
     if (busID == -1) return;
 
     getPassengerName(passengerName);
-    getphone(phone);
+    getPhone(phone);
 
     seat = chooseSeat(busID);
     if (seat == -1) return;
@@ -298,8 +288,8 @@ void cancelReservation(void){
         return;
     }
 
-    busIndex = findBusIndex(resBus[index]);
-    seat = resSeat[index];
+    busIndex = findBusIndex(reservations[index].busID);
+    seat = reservations[index].seatNumber;
 
     if(!releaseSeat(busIndex, seat)){
         printf("Could not release the seat. Reservation not cancelled.\n");
