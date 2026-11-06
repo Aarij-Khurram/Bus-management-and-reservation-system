@@ -5,14 +5,14 @@
 #define NAME_SIZE   50
 #define PHONE_SIZE  25
 
-struct Reservation // Okasha reservation
+typedef struct // Okasha reservation
 {
     int  reservationID;
     char passengerName[NAME_SIZE];
     char phone[PHONE_SIZE];
     int  busID;
     int  seatNumber;
-}; 
+} Reservation;
 
 
 
