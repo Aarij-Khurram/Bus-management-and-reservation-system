@@ -6,6 +6,7 @@
 #include "bus.h"
 #include "reservation.h"
 #include "seat.h"
+#include "data.h"
 
 int main()
 {

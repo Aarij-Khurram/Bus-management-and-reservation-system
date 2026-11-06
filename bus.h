@@ -5,15 +5,6 @@
 #ifndef BUS_H
 #define BUS_H
 
-#define BUS_COUNT 4
-
-typedef struct
-{
-    int busID;
-    char destination[20];
-    char departure[20];
-    float fare;
-} Bus;
 
 
 
