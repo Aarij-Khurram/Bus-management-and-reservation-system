@@ -4,9 +4,9 @@
 
 #ifndef BUS_H
 #define BUS_H
+#include "data.h"
 
-
-
+extern Bus buses[BUS_COUNT];
 
 void viewBuses(void);
 void displayBusDetails(int index);
