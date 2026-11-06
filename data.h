@@ -17,13 +17,16 @@ typedef struct // Okasha reservation
 
 
 #define BUS_COUNT 4 // Aarij bus information
+#define MAX_SEATS 40
 
 typedef struct
 {
     int busID;
+    char source[20];
     char destination[20];
     char departure[20];
     float fare;
+    int seats[MAX_SEATS];
 } Bus;
 
 
