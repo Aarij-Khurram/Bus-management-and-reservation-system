@@ -1,17 +1,17 @@
-
 // .c file for bus
 // feature is under development
 
 #include <stdio.h>
 #include <stddef.h>
+#include <ctype.h>
 #include "bus.h"
 #include "data.h"
 
 Bus buses[BUS_COUNT] = {
-    {101, "Lahore", "08:00 AM", 2500},
-    {102, "Islamabad", "10:00 AM", 3000},
-    {103, "Multan", "09:00 AM", 2200},
-    {104, "Peshawar", "11:00 AM", 3500}
+    {101, "Karachi", "Lahore", "08:00 AM", 2500},
+    {102, "Islamabad", "Multan", "10:00 AM", 3000},
+    {103, "Lahore", "Peshawar", "09:00 AM", 2200},
+    {104, "Karachi", "Islamabad", "11:00 AM", 3500}
 };
 
 void viewBuses(void)
@@ -21,7 +21,7 @@ void viewBuses(void)
     for (int i = 0; i < BUS_COUNT; i++)
     {
         printf("\nBus ID: %d\n", buses[i].busID);
-        printf("Route: Karachi -> %s\n", buses[i].destination);
+        printf("Route: %s -> %s\n", buses[i].source, buses[i].destination);
         printf("Departure: %s\n", buses[i].departure);
         printf("Fare: Rs. %.2f\n", buses[i].fare);
     }
@@ -38,7 +38,7 @@ void displayBusDetails(int index)
     printf("\n========== BUS DETAILS ==========\n");
 
     printf("Bus ID: %d\n", buses[index].busID);
-    printf("Route: Karachi -> %s\n", buses[index].destination);
+    printf("Route: %s -> %s\n", buses[index].source, buses[index].destination);
     printf("Departure: %s\n", buses[index].departure);
     printf("Fare: Rs. %.2f\n", buses[index].fare);
 }
@@ -85,6 +85,58 @@ void searchBusByID(void)
     else
     {
         displayBusDetails(index);
+    }
+}
+
+static int sameText(const char *a, const char *b)
+{
+    while (*a != '\0' && *b != '\0')
+    {
+        if (tolower((unsigned char)*a) != tolower((unsigned char)*b))
+        {
+            return 0;
+        }
+        a++;
+        b++;
+    }
+
+    return *a == '\0' && *b == '\0';
+}
+
+void searchBusesByRoute(void)
+{
+    char source[20];
+    char destination[20];
+    int found = 0;
+
+    printf("\n========== SEARCH BUSES BY ROUTE ==========\n");
+
+    printf("Enter source city: ");
+    if (scanf("%19s", source) != 1)
+    {
+        printf("Invalid input!\n");
+        return;
+    }
+
+    printf("Enter destination city: ");
+    if (scanf("%19s", destination) != 1)
+    {
+        printf("Invalid input!\n");
+        return;
+    }
+
+    for (int i = 0; i < BUS_COUNT; i++)
+    {
+        if (sameText(buses[i].source, source) && sameText(buses[i].destination, destination))
+        {
+            displayBusDetails(i);
+            found = 1;
+        }
+    }
+
+    if (!found)
+    {
+        printf("\nNo direct bus found from %s to %s.\n", source, destination);
     }
 }
 

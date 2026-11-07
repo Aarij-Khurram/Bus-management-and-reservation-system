@@ -12,6 +12,7 @@ void viewBuses(void);
 void displayBusDetails(int index);
 int findBusIndex(int id);
 void searchBusByID(void);
+void searchBusesByRoute(void);
 int getBusCount(void);
 int busExists(int id);
 int getBusID(int index);
