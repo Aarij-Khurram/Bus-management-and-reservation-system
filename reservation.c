@@ -8,11 +8,13 @@
 #include "seat.h"
 #include "data.h"
 
+ #define RES_FILE "reservations.dat"
  #define NameSize 50
  #define  PhoneSize 25
  #define  MaxReservations 100
  #define MaxTries 3
 
+ 
 static struct Reservation reservations[MaxReservations];
 static int resCount = 0;
 static int nextID = 1001;
@@ -26,7 +28,67 @@ int findReservation(int id){
     }
     return -1;
 }
+void saveReservations(void){
+    FILE *fp = fopen(RES_FILE, "wb");
 
+    if(fp == NULL){
+        printf("Error: could not save reservations.\n");
+        return;
+    }
+
+    fwrite(&nextID, sizeof(int), 1, fp);
+    fwrite(&resCount, sizeof(int), 1, fp);
+    if(fwrite(reservations, sizeof(struct Reservation), resCount, fp) != (size_t)resCount){
+        printf("Error: reservations may not have been saved completely.\n");
+    }
+
+    fclose(fp);
+}
+static void loadFromFile(void){
+    FILE *fp = fopen(RES_FILE, "rb");
+    int savedNextID, savedCount;
+
+    if(fp == NULL) return;                      
+
+    if(fread(&savedNextID, sizeof(int), 1, fp) != 1 ||
+       fread(&savedCount, sizeof(int), 1, fp) != 1){
+        printf("Warning: reservations file is damaged. Starting empty.\n");
+        fclose(fp);
+        return;
+    }
+
+    if(savedCount < 0 || savedCount > MaxReservations){
+        printf("Warning: reservations file is damaged. Starting empty.\n");
+        fclose(fp);
+        return;
+    }
+
+    if(fread(reservations, sizeof(struct Reservation), savedCount, fp) != (size_t)savedCount){
+        printf("Warning: reservations file is damaged. Starting empty.\n");
+        fclose(fp);
+        return;
+    }
+
+    resCount = savedCount;
+    nextID = savedNextID;
+    fclose(fp);
+}
+static void syncSeatsWithReservations(void){
+    int i, busIndex;
+
+    for(i= 0; i < resCount; i++){
+        busIndex = findBusIndex(reservations[i].busID);
+        if(busIndex == -1 || !reserveSeat(busIndex, reservations[i].seatNumber)){
+            printf("Warning: could not mark seat %d on bus %d as booked. \n", reservations[i].seatNumber, reservations[i].busID);
+        }
+    }
+}
+void loadReservations(void){
+    resCount = 0;
+    nextID = 1001;
+    loadFromFile();
+    syncSeatsWithReservations();
+}
 static int addReservation(char name[], char phone[], int busID, int seat){
     int id;
 
@@ -226,6 +288,7 @@ static int askYesNo(void){
     }
     return strcmp(answer, "y") == 0 || strcmp(answer, "yes") == 0;
 }
+
 void reserveTicket()
 {
     char passengerName[NameSize];
@@ -257,6 +320,7 @@ void reserveTicket()
         printf("Reservation list is full. The seat was released.\n");
         return;
     }
+    saveReservations();
     printf("\nReservation successful!");
     printReservation(findReservation(id));
 }
@@ -297,6 +361,7 @@ void cancelReservation(void){
     }
 
     removeReservation(index);
+    saveReservations();
     printf("Reservation cancelled.\n");
 }
 
