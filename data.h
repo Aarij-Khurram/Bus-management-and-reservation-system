@@ -2,19 +2,17 @@
 #ifndef DATA_H
 #define DATA_H
 
-#define NAME_SIZE   50
-#define PHONE_SIZE  25
+#define NAME_SIZE 50
+#define PHONE_SIZE 25
 
-typedef struct // Okasha reservation
+typedef struct Reservation // Okasha reservation
 {
-    int  reservationID;
+    int reservationID;
     char passengerName[NAME_SIZE];
     char phone[PHONE_SIZE];
-    int  busID;
-    int  seatNumber;
+    int busID;
+    int seatNumber;
 } Reservation;
-
-
 
 #define BUS_COUNT 4 // Aarij bus information
 #define MAX_SEATS 40
@@ -28,7 +26,5 @@ typedef struct
     float fare;
     int seats[MAX_SEATS];
 } Bus;
-
-
 
 #endif
