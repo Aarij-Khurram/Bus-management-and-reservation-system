@@ -44,9 +44,16 @@ void saveReservations(void){
 
     fclose(fp);
 }
+static int isValidSavedRecord(int i){
+    return reservations[i].reservationID >= 1001
+        && findBusIndex(reservations[i].busID) != -1
+        && reservations[i].seatNumber >= 1
+        && reservations[i].seatNumber <= MAX_SEATS;
+}
 static void loadFromFile(void){
     FILE *fp = fopen(RES_FILE, "rb");
     int savedNextID, savedCount;
+    int i;
 
     if(fp == NULL) return;                      
 
@@ -68,9 +75,22 @@ static void loadFromFile(void){
         fclose(fp);
         return;
     }
+    for(i = 0; i < savedCount; i++){
+        if(!isValidSavedRecord(i)){
+            printf("Warning: reservations file contains invalid data. Starting empty.\n");
+            fclose(fp);
+            return;
+        }
+    }
+        resCount = savedCount;
+        nextID = savedNextID;
+        
+        for(i = 0; i < resCount; i++){
+            if(reservations[i].reservationID >= nextID)
+                nextID = reservations[i].reservationID + 1;
+        }
+        if(nextID < 1001) nextID = 1001;
 
-    resCount = savedCount;
-    nextID = savedNextID;
     fclose(fp);
 }
 static void syncSeatsWithReservations(void){
@@ -343,8 +363,6 @@ void cancelReservation(void){
     }
 
     printReservation(index);
-    printf("\nCancel this reservation? (y/n): ");
-    readLine(answer, 10);
 
         printf("\nCancel this reservation? (y/n): ");
     if(!askYesNo()){
