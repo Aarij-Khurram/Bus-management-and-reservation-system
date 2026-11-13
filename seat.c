@@ -30,6 +30,42 @@ void displaySeats(int busIndex){
     printf("\n=========================================\n");    
 }
 
+void displaySeatSummary(int busIndex)
+{
+    if (busIndex < 0 || busIndex >= BUS_COUNT)
+    {
+        printf("Invalid bus selection.\n");
+        return;
+    }
+
+    int availableSeats = 0;
+    int bookedSeats = 0;
+
+    for (int i = 0; i < MAX_SEATS; i++)
+    {
+        if (buses[busIndex].seats[i] == 0)
+        {
+            availableSeats++;
+        }
+        else
+        {
+            bookedSeats++;
+        }
+    }
+
+    printf("\n========== SEAT SUMMARY ==========\n");
+    printf("Bus ID: %d\n", buses[busIndex].busID);
+    printf("Route: %s -> %s\n",
+           buses[busIndex].source,
+           buses[busIndex].destination);
+
+    printf("Total seats: %d\n", MAX_SEATS);
+    printf("Booked seats: %d\n", bookedSeats);
+    printf("Available seats: %d\n", availableSeats);
+
+    printf("==================================\n");
+}
+
 int isSeatAvailable(int busIndex,int seatNumber){
     if(busIndex<0 || busIndex >= BUS_COUNT)
         return 0;
