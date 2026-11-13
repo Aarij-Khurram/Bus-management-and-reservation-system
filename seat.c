@@ -118,4 +118,20 @@ int releaseSeat(int busIndex,int seatNumber){
     return 1;
 }
 
+int restoreSeat(int busIndex, int seatNumber)
+{
+    if (busIndex < 0 || busIndex >= BUS_COUNT)
+        return 0;
+
+    if (seatNumber < 1 || seatNumber > MAX_SEATS)
+        return 0;
+
+    if (buses[busIndex].seats[seatNumber - 1] == 1)
+        return 0;
+
+    buses[busIndex].seats[seatNumber - 1] = 1;
+
+    return 1;
+}
+
 
