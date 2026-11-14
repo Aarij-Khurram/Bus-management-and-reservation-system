@@ -1,9 +1,10 @@
-//main file for whole bus reservation system
-//feature is under development
+// main file for whole bus reservation system
+// feature is under development
 #include <stdio.h>
 #include "bus.h"
 #include "reservation.h"
 #include "seat.h"
+#include "search.h"
 #include "data.h"
 #include "reservation.h"
 
@@ -19,7 +20,7 @@ int main()
         printf("========================================\n");
         printf("1. View All Buses\n");
         printf("2. Search Bus by ID\n");
-        printf("3. Search Buses by Route\n");
+        printf("3. Search Buses by Route or Fare Range\n");
         printf("4. View Seat Availability\n");
         printf("5. Reserve Ticket\n");
         printf("6. Cancel Reservation\n");
@@ -43,75 +44,76 @@ int main()
         }
 
         int c;
-        while ((c = getchar()) != '\n' && c != EOF) {
+        while ((c = getchar()) != '\n' && c != EOF)
+        {
         }
 
         switch (choice)
         {
-            case 1:
-                printf("\nTotal buses listed: %d\n", getBusCount());
-                viewBuses();
-                break;
+        case 1:
+            printf("\nTotal buses listed: %d\n", getBusCount());
+            viewBuses();
+            break;
 
-            case 2:
-                searchBusByID();
-                break;
+        case 2:
+            searchBusByID();
+            break;
 
-            case 3:
-                searchBusesByRoute();
-                break;
+        case 3:
+            searchbus();
+            break;
 
-            case 4:
+        case 4:
+        {
+            int busID;
+            int index;
+
+            printf("\nEnter Bus ID to view seats: ");
+
+            if (scanf("%d", &busID) != 1)
             {
-                int busID;
-                int index;
+                printf("Invalid input! Please enter a numeric bus ID.\n");
 
-                printf("\nEnter Bus ID to view seats: ");
-
-                if (scanf("%d", &busID) != 1)
+                while ((c = getchar()) != '\n' && c != EOF)
                 {
-                    printf("Invalid input! Please enter a numeric bus ID.\n");
-
-                    while ((c = getchar()) != '\n' && c != EOF)
-                    {
-                    }
-
-                    break;
-                }
-
-                index = findBusIndex(busID);
-
-                if (index == -1)
-                {
-                    printf("Bus not found!\n");
-                }
-                else
-                {
-                    displaySeats(index);
                 }
 
                 break;
             }
 
-            case 5:
-                reserveTicket();
-                break;
+            index = findBusIndex(busID);
 
-            case 6:
-                cancelReservation();
-                break;
+            if (index == -1)
+            {
+                printf("Bus not found!\n");
+            }
+            else
+            {
+                displaySeats(index);
+            }
 
-            case 7:
-                viewReservation();
-                break;
+            break;
+        }
 
-            case 8:
-                printf("\nThank you for using the Bus Ticket Reservation System!\n");
-                break;
+        case 5:
+            reserveTicket();
+            break;
 
-            default:
-                // "Invalid choice"
-                printf("\nInvalid choice. Please try again.\n");
+        case 6:
+            cancelReservation();
+            break;
+
+        case 7:
+            viewReservation();
+            break;
+
+        case 8:
+            printf("\nThank you for using the Bus Ticket Reservation System!\n");
+            break;
+
+        default:
+            // "Invalid choice"
+            printf("\nInvalid choice. Please try again.\n");
         }
 
     } while (choice != 8);
