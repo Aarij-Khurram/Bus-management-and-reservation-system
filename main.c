@@ -5,9 +5,11 @@
 #include "reservation.h"
 #include "seat.h"
 #include "data.h"
+#include "reservation.h"
 
 int main()
 {
+    loadReservations();
     int choice;
 
     do

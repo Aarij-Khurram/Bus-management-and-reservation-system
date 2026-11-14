@@ -96,10 +96,12 @@ static void loadFromFile(void){
 static void syncSeatsWithReservations(void){
     int i, busIndex;
 
-    for(i= 0; i < resCount; i++){
+    for(i = 0; i < resCount; i++){
         busIndex = findBusIndex(reservations[i].busID);
-        if(busIndex == -1 || !reserveSeat(busIndex, reservations[i].seatNumber)){
-            printf("Warning: could not mark seat %d on bus %d as booked. \n", reservations[i].seatNumber, reservations[i].busID);
+
+        if(busIndex == -1 || !restoreSeat(busIndex, reservations[i].seatNumber)){
+            printf("Warning: could not mark seat %d on bus %d as booked.\n",
+                   reservations[i].seatNumber, reservations[i].busID);
         }
     }
 }
@@ -347,7 +349,7 @@ void reserveTicket()
 
 void cancelReservation(void){
     int id, index, busIndex, seat;
-    char answer[10];
+   
 
     printf("\n========== CANCEL RESERVATION ==========\n");
     id = readReservationID();
