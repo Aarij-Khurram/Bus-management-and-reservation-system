@@ -8,11 +8,10 @@
 #include "data.h"
 
 Bus buses[BUS_COUNT] = {
-    {101, "Karachi", "Lahore", "08:00 AM", 2500},
-    {102, "Islamabad", "Multan", "10:00 AM", 3000},
-    {103, "Lahore", "Peshawar", "09:00 AM", 2200},
-    {104, "Karachi", "Islamabad", "11:00 AM", 3500}
-};
+    {101, "Karachi", "Lahore", "08:00 AM", 2500, {0}},
+    {102, "Islamabad", "Multan", "10:00 AM", 3000, {0}},
+    {103, "Lahore", "Peshawar", "09:00 AM", 2200, {0}},
+    {104, "Karachi", "Islamabad", "11:00 AM", 3500, {0}}};
 
 void viewBuses(void)
 {

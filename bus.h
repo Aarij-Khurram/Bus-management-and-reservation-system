@@ -1,6 +1,6 @@
-//Header file for bus
-//feature is under development
 // Header file for bus
+// feature is under development
+//  Header file for bus
 
 #ifndef BUS_H
 #define BUS_H

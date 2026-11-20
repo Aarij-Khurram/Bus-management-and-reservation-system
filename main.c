@@ -6,7 +6,6 @@
 #include "seat.h"
 #include "search.h"
 #include "data.h"
-#include "reservation.h"
 
 int main()
 {
@@ -90,6 +89,7 @@ int main()
             else
             {
                 displaySeats(index);
+                displaySeatSummary(index);
             }
 
             break;
