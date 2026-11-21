@@ -7,6 +7,6 @@ void cancelReservation();
 void viewReservation(); 
 int findReservation(int id);
 void loadReservations(void);
-void saveReservations(void);
+int saveReservations(void);
 
 #endif
