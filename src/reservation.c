@@ -13,7 +13,7 @@
 #define TEMP_RES_FILE "reservations.tmp"
 
 
-#define MAX_RESERVATIONS 100
+#define MAX_RESERVATIONS 1200
 #define MAX_TRIES 3
 #define FIRST_RESERVATION_ID 1001
 
