@@ -14,7 +14,7 @@ typedef struct Reservation
     int seatNumber;
 } Reservation;
 
-#define BUS_COUNT 4 // Aarij bus information
+#define BUS_COUNT 30 // Aarij bus information
 #define MAX_SEATS 40
 
 typedef struct
